@@ -11,15 +11,13 @@ import UIKit
 class EnlargedViewController: UIViewController {
 
     @IBOutlet weak var enlargedImage: UIImageView!
+    var imageL: UIImage!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        enlargedImage.image = imageL
+        
         // Do any additional setup after loading the view.
-        
-                
-        
-        
     }
 
     override func didReceiveMemoryWarning() {

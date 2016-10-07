@@ -41,18 +41,6 @@ class ViewController: UIViewController {
     var ConstStopLabel = "停止"
     
     
-    
-    // MARK: - Image -
-    
-    //**
-    /*画像を配列のインデックスから参照させる
-    */
-    func imageChange(i:Int){
-        mainImage.image = UIImage(named: imageFile[i])
-        mainTitle.text = imageTitle[i]
-    }
-    
-    
 
     // MARK: - Life Cycle -
     override func viewDidLoad() {
@@ -76,7 +64,16 @@ class ViewController: UIViewController {
     // MARK: - Image -
     
     //**
-    /*画像切替えをインデックス順に表示する関数設定
+    /*画像を配列のインデックスから参照させる
+     */
+    func imageChange(i:Int){
+        mainImage.image = UIImage(named: imageFile[i])
+        mainTitle.text = imageTitle[i]
+    }
+    
+    
+    //**
+    /*画像切替えをインデックス順に表示する
     */
     func slideView() {
         
@@ -97,11 +94,12 @@ class ViewController: UIViewController {
     /*画面遷移
      */
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        // 画像をタッチした場合にタグの値を返す
+        // 画像をタッチした場合にタグの値を渡す
         let touch = touches.first! as UITouch
         
         if touch.view!.tag == 1{
             // 拡大画面に遷移する
+            timerStop()
             [self.performSegueWithIdentifier("enlargedSegue", sender: self)]
         }
     }
@@ -124,7 +122,7 @@ class ViewController: UIViewController {
     @IBAction func nextView(sender: AnyObject) {
         if i == imageFile.count - 1 {
             i = 0
-        }else{
+        } else {
             i += 1
         }
         imageChange(i)
@@ -136,7 +134,7 @@ class ViewController: UIViewController {
     @IBAction func backView(sender: AnyObject) {
         if i == 0{
             i = imageFile.count - 1
-        }else{
+        } else {
             i -= 1
         }
         imageChange(i)
@@ -157,23 +155,30 @@ class ViewController: UIViewController {
             timer = NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: #selector(ViewController.slideView), userInfo: nil, repeats: true)
             
         } else {
-            
-            // 停止を押した場合の各ボタンの制御
-            playButton.setTitle(ConstPlayLabel, forState: .Normal)
-            nextButton.enabled = true
-            backButton.enabled = true
-            
-            // タイマーの解除
-            timer.invalidate()
+            timerStop()
+
         }
     }
+    
     
     //**
     /*遷移画面から「戻る」ボタンの処理
      */
     @IBAction func backMainPage(segue: UIStoryboardSegue){
-        
     }
     
+    
+    //**
+    /*タイマー停止
+     */
+    func timerStop() {
+        // 停止を押した場合の各ボタンの制御
+        playButton.setTitle(ConstPlayLabel, forState: .Normal)
+        nextButton.enabled = true
+        backButton.enabled = true
+        
+        // タイマーの解除
+        timer.invalidate()
+    }
     
     }
